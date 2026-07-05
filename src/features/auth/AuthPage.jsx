@@ -1,13 +1,34 @@
 import { useState } from "react";
 import Logo from "../../components/Logo";
+import Toast from "../../components/Toast";
+import useToast from "../../hooks/useToast";
 import SignInForm from "./SignInForm";
 import RegisterForm from "./RegisterForm";
 
+// ⚠️ TEST-ONLY BLOCK — remove this once you wire up a real backend.
+// This fakes a "correct" account so we can trigger the invalid-login toast.
+const MOCK_CREDENTIALS = { email: "test@medicare.com", password: "password123" };
+// ⚠️ END TEST-ONLY BLOCK
+
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState("signin");
+  const { message, showToast, hideToast } = useToast();
+
+  const handleSignIn = (values) => {
+    // ⚠️ TEST-ONLY CHECK — replace this whole "if" block with your real API call.
+    if (values.email !== MOCK_CREDENTIALS.email || values.password !== MOCK_CREDENTIALS.password) {
+      showToast("Invalid email or password. Please try again.");
+      return;
+    }
+    // ⚠️ END TEST-ONLY CHECK
+
+    console.log("Sign in:", values);
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-200 px-4 py-12">
+      <Toast message={message} onClose={hideToast} />
+
       <div className="w-full max-w-md">
         <Logo />
 
@@ -33,7 +54,7 @@ export default function AuthPage() {
 
           <div className="p-6">
             {activeTab === "signin" ? (
-              <SignInForm onSubmit={(values) => console.log("Sign in:", values)} />
+              <SignInForm onSubmit={handleSignIn} />
             ) : (
               <RegisterForm onSubmit={(values) => console.log("Register:", values)} />
             )}
