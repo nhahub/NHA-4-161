@@ -30,12 +30,13 @@ export default function SignInForm() {
 
   return (
     <div>
-      <h2 className="text-xl font-bold text-slate-900">Welcome back</h2>
-      <p className="mb-6 text-sm text-slate-500">Sign in to your account</p>
+      <h2 className="text-xl font-bold text-slate-900 dark:text-white">Welcome back</h2>
+      <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">Sign in to your account</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="email" className="mb-1 block text-sm font-semibold text-slate-800">
+        {/* Email Field Wrapper with staggered animation */}
+        <div className="animate-field" style={{ animationDelay: '0.05s' }}>
+          <label htmlFor="email" className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">
             Email
           </label>
           <input
@@ -46,12 +47,13 @@ export default function SignInForm() {
             value={values.email}
             onChange={handleChange}
             required
-            className="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-emerald-500 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-300"
           />
         </div>
 
-        <div>
-          <label htmlFor="password" className="mb-1 block text-sm font-semibold text-slate-800">
+        {/* Password Field Wrapper with staggered animation */}
+        <div className="animate-field" style={{ animationDelay: '0.1s' }}>
+          <label htmlFor="password" className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-300">
             Password
           </label>
           <input
@@ -61,19 +63,22 @@ export default function SignInForm() {
             value={values.password}
             onChange={handleChange}
             required
-            className="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:border-emerald-500 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-300"
           />
         </div>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-red-600 animate-tab-switch">{error}</p>}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-lg bg-emerald-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 disabled:opacity-60"
-        >
-          {loading ? 'Signing in…' : 'Sign In'}
-        </button>
+        {/* Submit Button with staggered animation */}
+        <div className="animate-field pt-1" style={{ animationDelay: '0.15s' }}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-lg bg-emerald-600 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-700 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-emerald-500/40 disabled:opacity-60 shadow-sm hover:shadow-md hover:shadow-emerald-500/10"
+          >
+            {loading ? 'Signing in…' : 'Sign In'}
+          </button>
+        </div>
       </form>
     </div>
   );

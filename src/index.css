@@ -75,3 +75,98 @@
 body {
   margin: 0;
 }
+
+/*
+ * Custom transitions and keyframe animations for premium UX.
+ * Tailored HSL background gradients, slide-ins, and element bounces.
+ */
+
+@keyframes drift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes fadeInUpScale {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInField {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatLogo {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulseBg {
+  0% { transform: scale(1); opacity: 0.15; }
+  50% { transform: scale(1.08); opacity: 0.25; }
+  100% { transform: scale(1); opacity: 0.15; }
+}
+
+/* Fluid radial/linear gradient background animation */
+.animate-gradient-drift {
+  background: linear-gradient(-45deg, #e0f2fe, #f0fdf4, #e0f2fe, #f0fdf4);
+  background-size: 400% 400%;
+  animation: drift 18s ease infinite;
+}
+
+.dark .animate-gradient-drift {
+  background: linear-gradient(-45deg, #0f172a, #022c22, #0f172a, #1e1b4b);
+  background-size: 400% 400%;
+  animation: drift 18s ease infinite;
+}
+
+/* Premium radial glow elements */
+.animate-pulse-glow-1 {
+  animation: pulseBg 12s ease-in-out infinite;
+}
+
+.animate-pulse-glow-2 {
+  animation: pulseBg 15s ease-in-out infinite alternate;
+}
+
+.animate-card-entrance {
+  animation: fadeInUpScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-field {
+  opacity: 0;
+  animation: slideInField 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float-logo {
+  animation: floatLogo 6s ease-in-out infinite;
+}
+
+@keyframes tabTransition {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-tab-switch {
+  animation: tabTransition 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
