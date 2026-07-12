@@ -7,16 +7,16 @@ function RowActions({ appointment, onComplete, onCancel }) {
   const [confirmingCancel, setConfirmingCancel] = useState(false);
   const isResolved = appointment.status === "completed" || appointment.status === "cancelled";
 
-  if (isResolved) return <span className="text-xs text-muted-foreground">—</span>;
+  if (isResolved) return null;
 
   return (
-    <div className="flex items-center justify-end gap-2">
+    <div className="flex items-center gap-2">
       <button
         type="button"
         onClick={() => onComplete(appointment._id)}
-        className="inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
       >
-        <CheckCircle2 className="h-3 w-3" />
+        <CheckCircle2 className="h-3.5 w-3.5" />
         Complete
       </button>
 
@@ -29,7 +29,7 @@ function RowActions({ appointment, onComplete, onCancel }) {
             onCancel(appointment._id);
             setConfirmingCancel(false);
           }}
-          className="rounded-md px-2.5 py-1 text-xs font-semibold text-destructive hover:bg-destructive/10"
+          className="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-destructive hover:bg-destructive/10"
         >
           Confirm?
         </button>
@@ -37,7 +37,7 @@ function RowActions({ appointment, onComplete, onCancel }) {
         <button
           type="button"
           onClick={() => setConfirmingCancel(true)}
-          className="rounded-md px-2.5 py-1 text-xs font-semibold text-destructive hover:bg-destructive/10"
+          className="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
         >
           Cancel
         </button>
@@ -50,44 +50,32 @@ export default function AppointmentsView({ appointments, onComplete, onCancel })
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">Appointments</h2>
-        <p className="text-sm text-muted-foreground">Every booking on today's queue in one table.</p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Appointments</h1>
+        <p className="text-sm text-muted-foreground">All your appointments</p>
       </div>
 
       {appointments.length === 0 ? (
         <EmptyState message="No appointments match this state criteria." />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-border bg-card">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
-              <tr>
-                <th className="px-4 py-3 font-medium">Queue</th>
-                <th className="px-4 py-3 font-medium">Patient</th>
-                <th className="px-4 py-3 font-medium">Time</th>
-                <th className="px-4 py-3 font-medium">Type</th>
-                <th className="px-4 py-3 font-medium">Complaint</th>
-                <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointments.map((appointment) => (
-                <tr key={appointment._id} className="border-b border-border last:border-0">
-                  <td className="px-4 py-3 text-muted-foreground">#{appointment.queueNumber}</td>
-                  <td className="px-4 py-3 font-medium text-foreground">{appointment.patientName}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{appointment.timeSlot}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{appointment.type}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{appointment.complaint}</td>
-                  <td className="px-4 py-3">
-                    <StatusBadge status={appointment.status} />
-                  </td>
-                  <td className="px-4 py-3">
-                    <RowActions appointment={appointment} onComplete={onComplete} onCancel={onCancel} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="divide-y divide-border rounded-2xl border border-border bg-card">
+          {appointments.map((appointment) => (
+            <div
+              key={appointment._id}
+              className="flex flex-wrap items-center justify-between gap-3 px-5 py-4"
+            >
+              <div>
+                <p className="font-semibold text-foreground">{appointment.patientName}</p>
+                <p className="text-sm text-muted-foreground">
+                  {appointment.appointmentDate} · {appointment.timeSlot}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <StatusBadge status={appointment.status} />
+                <RowActions appointment={appointment} onComplete={onComplete} onCancel={onCancel} />
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

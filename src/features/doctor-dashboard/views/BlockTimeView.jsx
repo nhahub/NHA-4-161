@@ -4,7 +4,7 @@ export default function BlockTimeView({ blocks, onAddBlock, onRemoveBlock }) {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">Block Time</h2>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Block Time</h1>
         <p className="text-sm text-muted-foreground">Manage windows when you're unavailable for booking.</p>
       </div>
       <div className="max-w-md">

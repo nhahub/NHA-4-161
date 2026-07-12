@@ -4,7 +4,7 @@ export default function DailyScheduleView({ appointments, onComplete, onCancel }
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">Daily Schedule</h2>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Daily Schedule</h1>
         <p className="text-sm text-muted-foreground">Live, chronological view of today's queue.</p>
       </div>
       <ScheduleTimeline appointments={appointments} onComplete={onComplete} onCancel={onCancel} />
