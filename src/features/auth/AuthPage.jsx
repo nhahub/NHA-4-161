@@ -2,10 +2,12 @@ import { useState } from 'react';
 import Logo from '../../components/Logo';
 import Toast from '../../components/Toast';
 import useToast from '../../hooks/useToast';
+import useDarkMode from '../../hooks/useDarkMode';
 import SignInForm from './SignInForm';
 import RegisterForm from './RegisterForm';
 
 export default function AuthPage() {
+  useDarkMode();
   const [activeTab, setActiveTab] = useState('signin');
   const { message, hideToast } = useToast();
 
