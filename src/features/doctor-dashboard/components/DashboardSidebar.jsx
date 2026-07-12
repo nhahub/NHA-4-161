@@ -1,4 +1,4 @@
-import { Ban, Calendar, Clock, LayoutDashboard } from "lucide-react";
+import { Ban, Calendar, Clock, LayoutDashboard, LogOut } from "lucide-react";
 import Logo from "../../../components/Logo";
 
 const NAV_ITEMS = [
@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { id: "blocktime", label: "Block Time", Icon: Ban },
 ];
 
-export default function DashboardSidebar({ activeView, onNavigate, isOpen }) {
+export default function DashboardSidebar({ activeView, onNavigate, isOpen, doctorName, onSignOut }) {
   return (
     <aside
       className={`shrink-0 overflow-hidden border-r border-border bg-muted/60 transition-all duration-200 ${
@@ -42,6 +42,21 @@ export default function DashboardSidebar({ activeView, onNavigate, isOpen }) {
             );
           })}
         </nav>
+
+        <div className="border-t border-border p-3 mt-auto">
+          <div className="mb-2 px-3 py-1.5 leading-tight">
+            <p className="text-sm font-semibold text-foreground truncate">{doctorName}</p>
+            <p className="text-xs text-muted-foreground">Doctor</p>
+          </div>
+          <button
+            type="button"
+            onClick={onSignOut}
+            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-destructive transition-colors"
+          >
+            <LogOut className="h-4 w-4" />
+            Sign out
+          </button>
+        </div>
       </div>
     </aside>
   );

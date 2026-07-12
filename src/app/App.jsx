@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from '../context/AuthContext';
 import ProtectedRoute from '../components/ProtectedRoute';
 import AuthPage from '../features/auth/AuthPage';
 import DashboardLayout from '../features/dashboard/DashboardLayout';
+import DashboardHome from '../features/dashboard/DashboardHome';
 import StaffPage from '../features/staff/StaffPage';
 import DepartmentsPage from '../features/departments/DepartmentsPage';
 import AnalyticsPage from '../features/analytics/AnalyticsPage';
@@ -55,7 +56,7 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate to="staff" replace />} />
+            <Route index element={<DashboardHome />} />
             <Route path="staff"       element={<StaffPage />} />
             <Route path="departments" element={<DepartmentsPage />} />
             <Route path="analytics"   element={<AnalyticsPage />} />
