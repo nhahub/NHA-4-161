@@ -17,10 +17,10 @@ const CHART_COLORS = ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#ef4444','#ec4899
 
 function StatCard({ label, value, sub }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-1 text-3xl font-bold text-slate-900">{value}</p>
-      {sub && <p className="mt-0.5 text-xs text-slate-400">{sub}</p>}
+    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</p>
+      <p className="mt-1 text-3xl font-bold text-foreground">{value}</p>
+      {sub && <p className="mt-0.5 text-xs text-muted-foreground">{sub}</p>}
     </div>
   );
 }
@@ -119,10 +119,10 @@ export default function AnalyticsPage() {
           {/* ── Row 1: Trend + Pie ────────────────────── */}
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             {/* Daily trend */}
-            <div className="col-span-2 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 className="mb-4 text-sm font-semibold text-slate-700">Daily Appointments</h2>
+            <div className="col-span-2 rounded-2xl border border-border bg-card p-5 shadow-sm">
+              <h2 className="mb-4 text-sm font-semibold text-foreground">Daily Appointments</h2>
               {trendData.length === 0 ? (
-                <p className="py-8 text-center text-xs text-slate-400">No data for this period</p>
+                <p className="py-8 text-center text-xs text-muted-foreground">No data for this period</p>
               ) : (
                 <ResponsiveContainer width="100%" height={220}>
                   <LineChart data={trendData}>
@@ -137,10 +137,10 @@ export default function AnalyticsPage() {
             </div>
 
             {/* Status breakdown pie */}
-            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 className="mb-4 text-sm font-semibold text-slate-700">By Status</h2>
+            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+              <h2 className="mb-4 text-sm font-semibold text-foreground">By Status</h2>
               {statusPieData.length === 0 ? (
-                <p className="py-8 text-center text-xs text-slate-400">No data</p>
+                <p className="py-8 text-center text-xs text-muted-foreground">No data</p>
               ) : (
                 <>
                   <ResponsiveContainer width="100%" height={180}>
@@ -155,7 +155,7 @@ export default function AnalyticsPage() {
                   </ResponsiveContainer>
                   <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
                     {statusPieData.map((d) => (
-                      <span key={d.name} className="flex items-center gap-1 text-xs text-slate-500">
+                      <span key={d.name} className="flex items-center gap-1 text-xs text-muted-foreground">
                         <span className="h-2 w-2 rounded-full" style={{ background: STATUS_COLORS[d.name] ?? '#94a3b8' }} />
                         {d.name} ({d.value})
                       </span>
@@ -168,10 +168,10 @@ export default function AnalyticsPage() {
 
           {/* ── Row 2: By Dept + By Doctor ───────────── */}
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 className="mb-4 text-sm font-semibold text-slate-700">Top Departments</h2>
+            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+              <h2 className="mb-4 text-sm font-semibold text-foreground">Top Departments</h2>
               {deptBarData.length === 0 ? (
-                <p className="py-8 text-center text-xs text-slate-400">No data</p>
+                <p className="py-8 text-center text-xs text-muted-foreground">No data</p>
               ) : (
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={deptBarData} layout="vertical" margin={{ left: 8 }}>
@@ -186,10 +186,10 @@ export default function AnalyticsPage() {
               )}
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 className="mb-4 text-sm font-semibold text-slate-700">Top Doctors</h2>
+            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+              <h2 className="mb-4 text-sm font-semibold text-foreground">Top Doctors</h2>
               {doctorBarData.length === 0 ? (
-                <p className="py-8 text-center text-xs text-slate-400">No data</p>
+                <p className="py-8 text-center text-xs text-muted-foreground">No data</p>
               ) : (
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={doctorBarData} layout="vertical" margin={{ left: 8 }}>

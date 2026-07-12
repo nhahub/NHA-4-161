@@ -6,9 +6,9 @@ import ConfirmModal from '../../components/ConfirmModal';
 import { useAuth } from '../../context/AuthContext';
 
 const ROLE_BADGE = {
-  admin:        'bg-purple-100 text-purple-700',
-  doctor:       'bg-blue-100 text-blue-700',
-  receptionist: 'bg-amber-100 text-amber-700',
+  admin:        'text-purple-600 border-purple-500/30 bg-purple-500/10 dark:text-purple-400',
+  doctor:       'text-info border-info/30 bg-info/15',
+  receptionist: 'text-warning border-warning/30 bg-warning/15',
 };
 
 export default function StaffPage() {
@@ -65,8 +65,8 @@ export default function StaffPage() {
       {/* ── Header ────────────────────────────────── */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Staff</h1>
-          <p className="text-sm text-slate-500">{total} total members</p>
+          <h1 className="text-2xl font-bold text-foreground">Staff</h1>
+          <p className="text-sm text-muted-foreground">{total} total members</p>
         </div>
         {isAdmin && (
           <button
@@ -79,68 +79,60 @@ export default function StaffPage() {
       </div>
 
       {/* ── Search ────────────────────────────────── */}
-      <div className="relative mb-4 max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+      <div className="relative mb-6 max-w-sm">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <input
           placeholder="Search by name or email…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full rounded-lg border border-slate-300 bg-white py-2 pl-9 pr-3 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className="w-full rounded-lg border border-border bg-card py-2 pl-9 pr-3 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-muted-foreground"
         />
       </div>
 
-      {/* ── Table ─────────────────────────────────── */}
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      {/* ── List ─────────────────────────────────── */}
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
         {loading ? (
-          <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Loading…</div>
+          <div className="flex items-center justify-center py-16 text-muted-foreground text-sm">Loading…</div>
         ) : filtered.length === 0 ? (
-          <div className="flex items-center justify-center py-16 text-slate-400 text-sm">No staff members found.</div>
+          <div className="flex items-center justify-center py-16 text-muted-foreground text-sm">No staff members found.</div>
         ) : (
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                {['Name', 'Email', 'Role', 'Department', ...(isAdmin ? ['Actions'] : [])].map((h) => (
-                  <th key={h} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {filtered.map((s) => (
-                <tr key={s._id} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-4 py-3 font-medium text-slate-900">{s.name}</td>
-                  <td className="px-4 py-3 text-slate-600">{s.email}</td>
-                  <td className="px-4 py-3">
-                    <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${ROLE_BADGE[s.role]}`}>
-                      {s.role}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-slate-600">{deptName(s.departmentId)}</td>
+          <div className="divide-y divide-border">
+            {filtered.map((s) => (
+              <div key={s._id} className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 hover:bg-muted/40 transition-colors">
+                <div>
+                  <p className="font-semibold text-foreground">{s.name}</p>
+                  <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+                    <span>{s.email}</span>
+                    <span>•</span>
+                    <span>{deptName(s.departmentId)}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold capitalize ${ROLE_BADGE[s.role]}`}>
+                    {s.role}
+                  </span>
                   {isAdmin && (
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setFormTarget(s)}
-                          className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
-                          title="Edit"
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() => setDeleteTarget(s)}
-                          className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
-                          title="Deactivate"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
+                    <div className="flex items-center gap-1.5 border-l border-border pl-3">
+                      <button
+                        onClick={() => setFormTarget(s)}
+                        className="rounded-lg border border-border bg-background p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                        title="Edit"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => setDeleteTarget(s)}
+                        className="rounded-lg border border-border bg-background p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+                        title="Deactivate"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
 

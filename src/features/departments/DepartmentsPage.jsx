@@ -28,23 +28,23 @@ function ReassignModal({ dept, activeStaff, onSave, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-        <h2 className="mb-4 text-lg font-bold text-slate-900">Reassign Head — {dept.name}</h2>
+      <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-6 shadow-xl">
+        <h2 className="mb-4 text-lg font-bold text-foreground">Reassign Head — {dept.name}</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="headUserId" className="mb-1 block text-xs font-semibold text-slate-700">Department Head</label>
+            <label htmlFor="headUserId" className="mb-1 block text-xs font-semibold text-muted-foreground">Department Head</label>
             <select id="headUserId" name="headUserId" value={values.headUserId} onChange={handleChange}
-              className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
               <option value="">— None —</option>
               {activeStaff.map((s) => (
-                <option key={s._id} value={s._id}>{s.name} ({s.role})</option>
+                <option key={s._id} value={s._id} className="bg-card text-foreground">{s.name} ({s.role})</option>
               ))}
             </select>
           </div>
           {error && <p className="text-sm text-red-600">{error}</p>}
           <div className="flex justify-end gap-2">
-            <button type="button" onClick={onClose} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>
-            <button type="submit" disabled={loading} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60">
+            <button type="button" onClick={onClose} className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted">Cancel</button>
+            <button type="submit" disabled={loading} className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/95 disabled:opacity-60">
               {loading ? 'Saving…' : 'Confirm'}
             </button>
           </div>
@@ -119,8 +119,8 @@ export default function DepartmentsPage() {
   return (
     <div className="p-6 md:p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">Departments</h1>
-        <p className="text-sm text-slate-500">{departments.length} active departments</p>
+        <h1 className="text-2xl font-bold text-foreground">Departments</h1>
+        <p className="text-sm text-muted-foreground">{departments.length} active departments</p>
       </div>
 
       {/* ── Add department ───────────────────────── */}
@@ -131,7 +131,7 @@ export default function DepartmentsPage() {
               placeholder="New department name…"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              className="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-muted-foreground"
             />
             <button type="submit" disabled={creating || !newName.trim()}
               className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60">
@@ -143,43 +143,42 @@ export default function DepartmentsPage() {
       )}
 
       {/* ── List ─────────────────────────────────── */}
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
         {loading ? (
-          <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Loading…</div>
+          <div className="flex items-center justify-center py-16 text-muted-foreground text-sm">Loading…</div>
         ) : departments.length === 0 ? (
-          <div className="flex items-center justify-center py-16 text-slate-400 text-sm">No departments yet.</div>
+          <div className="flex items-center justify-center py-16 text-muted-foreground text-sm">No departments yet.</div>
         ) : (
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-slate-200 bg-slate-50">
-                {['Department', 'Head', ...(isAdmin ? ['Actions'] : [])].map((h) => (
-                  <th key={h} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {departments.map((d) => (
-                <tr key={d._id} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-4 py-3 font-medium text-slate-900">{d.name}</td>
-                  <td className="px-4 py-3 text-slate-600">{staffName(d.headUserId)}</td>
-                  {isAdmin && (
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <button onClick={() => setReassign(d)}
-                          className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700" title="Reassign head">
-                          <UserCog className="h-4 w-4" />
-                        </button>
-                        <button onClick={() => setDeleteTarget(d)}
-                          className="rounded p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600" title="Deactivate">
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="divide-y divide-border">
+            {departments.map((d) => (
+              <div key={d._id} className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 hover:bg-muted/40 transition-colors">
+                <div>
+                  <p className="font-semibold text-foreground">{d.name}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Head: <span className="font-medium text-foreground">{staffName(d.headUserId)}</span>
+                  </p>
+                </div>
+                {isAdmin && (
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => setReassign(d)}
+                      className="rounded-lg border border-border bg-background p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                      title="Reassign head"
+                    >
+                      <UserCog className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => setDeleteTarget(d)}
+                      className="rounded-lg border border-border bg-background p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+                      title="Deactivate"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         )}
       </div>
 

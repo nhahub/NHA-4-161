@@ -36,24 +36,24 @@ export default function ConfirmModal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+      <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl">
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-lg font-bold text-slate-900">{title}</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
+          <h2 className="text-lg font-bold text-foreground">{title}</h2>
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <p className="mt-3 text-sm text-slate-700">{message}</p>
+        <p className="mt-3 text-sm text-foreground">{message}</p>
         {detail && (
-          <p className="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">{detail}</p>
+          <p className="mt-2 rounded-lg bg-warning/10 border border-warning/20 px-3 py-2 text-sm text-warning">{detail}</p>
         )}
 
         <div className="mt-5 flex justify-end gap-2">
           <button
             ref={cancelRef}
             onClick={onClose}
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted"
           >
             {onConfirm ? 'Cancel' : 'Close'}
           </button>
@@ -61,7 +61,7 @@ export default function ConfirmModal({
             <button
               onClick={onConfirm}
               className={`rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors ${
-                danger ? 'bg-red-600 hover:bg-red-700' : 'bg-emerald-600 hover:bg-emerald-700'
+                danger ? 'bg-destructive hover:bg-destructive/90' : 'bg-primary hover:bg-primary/90'
               }`}
             >
               {confirmLabel}

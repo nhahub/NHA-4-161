@@ -53,12 +53,12 @@ export default function DashboardHome() {
   return (
     <div className="p-6 md:p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Admin Dashboard</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">System overview</p>
+        <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
+        <p className="text-sm text-muted-foreground">System overview</p>
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center py-16 text-sm text-slate-400">
+        <div className="flex items-center justify-center py-16 text-sm text-muted-foreground">
           Loading overview…
         </div>
       ) : (
@@ -66,14 +66,14 @@ export default function DashboardHome() {
           {cards.map((c) => {
             const Icon = c.icon;
             return (
-              <div key={c.title} className="relative rounded-2xl border border-slate-200 dark:border-slate-800 bg-card p-6 shadow-sm">
+              <div key={c.title} className="relative rounded-2xl border border-border bg-card p-6 shadow-sm">
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{c.title}</p>
-                    <p className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">{c.value}</p>
-                    <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">{c.label}</p>
+                    <p className="text-sm font-medium text-muted-foreground">{c.title}</p>
+                    <p className="mt-2 text-3xl font-bold text-foreground">{c.value}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{c.label}</p>
                   </div>
-                  <div className="rounded-lg bg-slate-50 dark:bg-slate-800 p-2 text-slate-400 dark:text-slate-300">
+                  <div className="rounded-lg bg-muted p-2 text-muted-foreground">
                     <Icon className="h-5 w-5" />
                   </div>
                 </div>
@@ -81,21 +81,21 @@ export default function DashboardHome() {
             );
           })}
 
-          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-card p-6 shadow-sm">
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
             <div className="flex items-start justify-between">
               <div className="flex flex-col h-full justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Analytics</p>
+                  <p className="text-sm font-medium text-muted-foreground">Analytics</p>
                 </div>
                 <Link
                   to="/dashboard/analytics"
-                  className="mt-6 flex items-center gap-1 text-sm font-semibold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 group transition-colors"
+                  className="mt-6 flex items-center gap-1 text-sm font-semibold text-foreground hover:text-primary group transition-colors animate-pulse-subtle"
                 >
                   View Reports
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               </div>
-              <div className="rounded-lg bg-slate-50 dark:bg-slate-800 p-2 text-slate-400 dark:text-slate-300">
+              <div className="rounded-lg bg-muted p-2 text-muted-foreground">
                 <BarChart3 className="h-5 w-5" />
               </div>
             </div>
