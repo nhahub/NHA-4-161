@@ -63,6 +63,7 @@ export default function DepartmentsPage() {
   const [loading, setLoading]         = useState(true);
   const [newName, setNewName]         = useState('');
   const [creating, setCreating]       = useState(false);
+  const [createError, setCreateError] = useState('');
   const [reassignTarget, setReassign] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [blockInfo, setBlockInfo]     = useState(null); // ACTIVE_DEPENDENCIES_EXIST info
@@ -89,10 +90,13 @@ export default function DepartmentsPage() {
     e.preventDefault();
     if (!newName.trim()) return;
     setCreating(true);
+    setCreateError('');
     try {
       await api.post('/departments', { name: newName.trim() });
       setNewName('');
       fetchAll();
+    } catch (err) {
+      setCreateError(err.response?.data?.error || 'Failed to create department');
     } finally {
       setCreating(false);
     }
@@ -121,18 +125,21 @@ export default function DepartmentsPage() {
 
       {/* ── Add department ───────────────────────── */}
       {isAdmin && (
-        <form onSubmit={handleCreate} className="mb-6 flex max-w-sm gap-2">
-          <input
-            placeholder="New department name…"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            className="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-          />
-          <button type="submit" disabled={creating || !newName.trim()}
-            className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60">
-            <Plus className="h-4 w-4" /> Add
-          </button>
-        </form>
+        <div className="mb-6 max-w-sm">
+          <form onSubmit={handleCreate} className="flex gap-2">
+            <input
+              placeholder="New department name…"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              className="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            />
+            <button type="submit" disabled={creating || !newName.trim()}
+              className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60">
+              <Plus className="h-4 w-4" /> Add
+            </button>
+          </form>
+          {createError && <p className="mt-2 text-sm text-red-600">{createError}</p>}
+        </div>
       )}
 
       {/* ── List ─────────────────────────────────── */}

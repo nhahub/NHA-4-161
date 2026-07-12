@@ -33,7 +33,7 @@ const updateRules = [
 ];
 
 const listRules = [
-  query('limit').optional().isInt({ min: 1, max: 100 }).toInt(),
+  query('limit').optional().isInt({ min: 1, max: 1000 }).toInt(),
   query('skip').optional().isInt({ min: 0 }).toInt(),
   query('role').optional().isIn(['admin', 'doctor', 'receptionist']),
 ];

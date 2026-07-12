@@ -40,7 +40,8 @@ const generalLimiter = rateLimit({ windowMs: 60_000, max: 100 });
 const authLimiter = rateLimit({ windowMs: 60_000, max: 5 });
 
 app.use('/api/v1', generalLimiter);
-app.use('/api/v1/auth', authLimiter);
+app.use('/api/v1/auth/login', authLimiter);
+app.use('/api/v1/auth/refresh', authLimiter);
 
 // ── Routes ────────────────────────────────────────────────────────
 app.use('/api/v1/auth', authRoutes);
@@ -53,8 +54,15 @@ app.use('/api/v1/analytics', analyticsRoutes);
 // eslint-disable-next-line no-unused-vars
 app.use((err, _req, res, _next) => {
   console.error('[ERROR]', err.message);
-  const status = err.status || 500;
-  res.status(status).json({ error: err.message || 'Internal Server Error' });
+  let status = err.status || 500;
+  let message = err.message || 'Internal Server Error';
+
+  if (err.code === 11000) {
+    status = 400;
+    message = 'This name is already in use.';
+  }
+
+  res.status(status).json({ error: message });
 });
 
 module.exports = app;
