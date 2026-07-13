@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const departmentRoutes = require('./routes/departments');
 const appointmentRoutes = require('./routes/appointments');
+const blockTimeRoutes = require('./routes/blockTime');
 const analyticsRoutes = require('./routes/analytics');
 
 const app = express();
@@ -48,6 +49,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/staff', userRoutes);
 app.use('/api/v1/departments', departmentRoutes);
 app.use('/api/v1/appointments', appointmentRoutes);
+app.use('/api/v1/block-time', blockTimeRoutes);
 app.use('/api/v1/analytics', analyticsRoutes);
 
 // ── Global error handler ──────────────────────────────────────────
