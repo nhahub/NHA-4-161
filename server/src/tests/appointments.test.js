@@ -236,11 +236,11 @@ test('receptionist GET /api/v1/staff?role=patient returns 200 through full HTTP 
 
   const emails = body.users.map((u) => u.email);
   assert.ok(
-    emails.includes('appt-auth-test-patientA@test.com'),
+    emails.includes('appt-auth-test-patienta@test.com'),
     'patientA must appear in the patient list'
   );
   assert.ok(
-    emails.includes('appt-auth-test-patientB@test.com'),
+    emails.includes('appt-auth-test-patientb@test.com'),
     'patientB must appear in the patient list'
   );
 });
