@@ -63,10 +63,10 @@ export default function AuthPage() {
                 transform: activeTab === 'signin' ? 'translateX(0%)' : 'translateX(-50%)',
               }}
             >
-              <div className="w-1/2 shrink-0 p-8 align-top" inert={activeTab === 'signin' ? undefined : 'true'}>
+              <div className="w-1/2 shrink-0 p-8 align-top" inert={activeTab !== 'signin'}>
                 <SignInForm />
               </div>
-              <div className="w-1/2 shrink-0 p-8 align-top" inert={activeTab === 'register' ? undefined : 'true'}>
+              <div className="w-1/2 shrink-0 p-8 align-top" inert={activeTab !== 'register'}>
                 <RegisterForm />
               </div>
             </div>

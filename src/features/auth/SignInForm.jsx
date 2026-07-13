@@ -22,7 +22,9 @@ export default function SignInForm() {
         navigate('/dashboard/staff');
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Invalid email or password.');
+      const rawError = err.response?.data?.error;
+      const msg = typeof rawError === 'object' ? rawError?.message : rawError;
+      setError(msg || 'Invalid email or password.');
     } finally {
       setLoading(false);
     }

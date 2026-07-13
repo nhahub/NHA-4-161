@@ -25,9 +25,11 @@ export default function RegisterForm() {
       await register(values.email, values.password, values.fullName, values.phone);
       navigate("/patient-dashboard");
     } catch (err) {
+      const rawError = err.response?.data?.error;
+      const errorMsg = typeof rawError === 'object' ? rawError?.message : rawError;
       const msg =
         err.response?.data?.errors?.[0]?.msg ||
-        err.response?.data?.error ||
+        errorMsg ||
         "Registration failed. Please try again.";
       setError(msg);
     } finally {

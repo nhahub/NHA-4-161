@@ -33,8 +33,10 @@ export default function StaffForm({ existing, departments, onSave, onClose }) {
       }
       onSave();
     } catch (err) {
+      const rawError = err.response?.data?.error;
+      const errorMsg = typeof rawError === 'object' ? rawError?.message : rawError;
       const msg = err.response?.data?.errors?.[0]?.msg
-        || err.response?.data?.error
+        || errorMsg
         || 'Something went wrong';
       setError(msg);
     } finally {

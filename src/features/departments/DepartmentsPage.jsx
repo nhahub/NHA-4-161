@@ -20,7 +20,9 @@ function ReassignModal({ dept, activeStaff, onSave, onClose }) {
       });
       onSave();
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to update');
+      const rawError = err.response?.data?.error;
+      const msg = typeof rawError === 'object' ? rawError?.message : rawError;
+      setError(msg || 'Failed to update');
     } finally {
       setLoading(false);
     }
@@ -96,7 +98,9 @@ export default function DepartmentsPage() {
       setNewName('');
       fetchAll();
     } catch (err) {
-      setCreateError(err.response?.data?.error || 'Failed to create department');
+      const rawError = err.response?.data?.error;
+      const msg = typeof rawError === 'object' ? rawError?.message : rawError;
+      setCreateError(msg || 'Failed to create department');
     } finally {
       setCreating(false);
     }
