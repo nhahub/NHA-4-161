@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import Toast from '../../components/Toast';
 import useToast from '../../hooks/useToast';
@@ -8,7 +9,10 @@ import RegisterForm from './RegisterForm';
 
 export default function AuthPage() {
   useDarkMode();
-  const [activeTab, setActiveTab] = useState('signin');
+  const [searchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(
+    searchParams.get('tab') === 'register' ? 'register' : 'signin'
+  );
   const { message, hideToast } = useToast();
 
   return (

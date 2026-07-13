@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from '../context/AuthContext';
 import ProtectedRoute from '../components/ProtectedRoute';
 import ReceptionistDashboard from '../features/receptionist/ReceptionistDashboard';
 import AuthPage from '../features/auth/AuthPage';
+import LandingPage from '../features/landing/LandingPage';
 import DashboardLayout from '../features/dashboard/DashboardLayout';
 import DashboardHome from '../features/dashboard/DashboardHome';
 import StaffPage from '../features/staff/StaffPage';
@@ -12,14 +13,16 @@ import DoctorDashboard from '../features/doctor-dashboard/DoctorDashboard';
 import PatientDashboard from '../features/patient-dashboard/PatientDashboard';
 import './App.css';
 
-function RootRedirect() {
+function LandingRoute() {
   const { user } = useAuth();
   if (user === undefined) return null; // loading
-  if (!user) return <Navigate to="/login" replace />;
-  if (user.role === 'doctor') return <Navigate to="/doctor-dashboard" replace />;
-  if (user.role === 'patient') return <Navigate to="/patient-dashboard" replace />;
-  if (user.role === 'receptionist') return <Navigate to="/receptionist-dashboard" replace />;
-  return <Navigate to="/dashboard/staff" replace />;
+  if (user) {
+    if (user.role === 'doctor') return <Navigate to="/doctor-dashboard" replace />;
+    if (user.role === 'patient') return <Navigate to="/patient-dashboard" replace />;
+    if (user.role === 'receptionist') return <Navigate to="/receptionist-dashboard" replace />;
+    return <Navigate to="/dashboard/staff" replace />;
+  }
+  return <LandingPage />;
 }
 
 function LoginRoute() {
@@ -107,7 +110,7 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<RootRedirect />} />
+          <Route path="/" element={<LandingRoute />} />
           <Route path="/login" element={<LoginRoute />} />
 
           <Route
