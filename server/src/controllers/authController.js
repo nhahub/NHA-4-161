@@ -1,5 +1,5 @@
 const { body, validationResult } = require('express-validator');
-const { parsePhoneNumberFromString } = require('libphonenumber-js');
+const { parsePhoneNumberFromString } = require('libphonenumber-js/max');
 const authService = require('../services/authService');
 const User = require('../models/User');
 
