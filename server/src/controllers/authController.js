@@ -1,4 +1,5 @@
 const { body, validationResult } = require('express-validator');
+const { parsePhoneNumberFromString } = require('libphonenumber-js/max');
 const authService = require('../services/authService');
 const User = require('../models/User');
 
@@ -20,7 +21,20 @@ const registerRules = [
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
     .withMessage('Password must be ≥12 chars with upper, lower, and digit'),
   body('name').trim().notEmpty(),
-  body('phone').optional().trim(),
+  body('phone')
+    .optional({ checkFalsy: true })
+    .trim()
+    .custom((value) => {
+      const phoneNumber = parsePhoneNumberFromString(value);
+      if (!phoneNumber || !phoneNumber.isValid()) {
+        throw new Error('Invalid phone number format. Please include country code.');
+      }
+      return true;
+    })
+    .customSanitizer((value) => {
+      const phoneNumber = parsePhoneNumberFromString(value);
+      return phoneNumber ? phoneNumber.format('E.164') : value;
+    }),
 ];
 
 async function login(req, res, next) {

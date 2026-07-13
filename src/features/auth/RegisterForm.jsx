@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import useForm from "../../hooks/useForm";
+import PhoneInput from 'react-phone-number-input/max';
+import 'react-phone-number-input/style.css';
 
 export default function RegisterForm() {
   const { register } = useAuth();
   const navigate = useNavigate();
-  const { values, handleChange } = useForm({
+  const { values, handleChange, setValues } = useForm({
     fullName: "",
     email: "",
     phone: "",
@@ -37,10 +39,9 @@ export default function RegisterForm() {
     }
   };
 
-  const fields = [
+  const textFields = [
     { name: "fullName", label: "Full Name", type: "text", delay: "0.03s" },
     { name: "email", label: "Email", type: "email", delay: "0.08s" },
-    { name: "phone", label: "Phone", type: "tel", delay: "0.13s" },
   ];
 
   return (
@@ -49,7 +50,7 @@ export default function RegisterForm() {
       <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">Register as a new patient</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {fields.map((field) => (
+        {textFields.map((field) => (
           <div
             key={field.name}
             className="animate-field"
@@ -69,6 +70,22 @@ export default function RegisterForm() {
             />
           </div>
         ))}
+
+        <div className="animate-field" style={{ animationDelay: "0.13s" }}>
+          <label htmlFor="phone" className="mb-1 block text-sm font-semibold text-slate-800 dark:text-slate-300">
+            Phone
+          </label>
+          <PhoneInput
+            id="phone"
+            name="phone"
+            international
+            defaultCountry="US"
+            limitMaxLength
+            value={values.phone}
+            onChange={(value) => setValues((prev) => ({ ...prev, phone: value }))}
+            className="w-full flex items-center [&_.PhoneInputCountry]:flex [&_.PhoneInputCountry]:items-center [&_.PhoneInputCountry]:mr-2 [&_.PhoneInputCountrySelectArrow]:opacity-50 [&_.PhoneInputCountrySelectArrow]:ml-1 [&_.PhoneInputCountrySelect]:dark:bg-slate-900 [&_.PhoneInputCountrySelect]:dark:text-white [&_option]:dark:bg-slate-900 [&_option]:dark:text-white [&_.PhoneInputInput]:flex-1 [&_.PhoneInputInput]:min-w-0 [&_.PhoneInputInput]:bg-transparent [&_.PhoneInputInput]:border-none [&_.PhoneInputInput]:outline-none [&_.PhoneInputInput]:p-0 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus-within:border-emerald-500 dark:focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-500/20 focus-within:shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-300"
+          />
+        </div>
 
         <div className="animate-field" style={{ animationDelay: "0.18s" }}>
           <label htmlFor="password" className="mb-1 block text-sm font-semibold text-slate-800 dark:text-slate-300">

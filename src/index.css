@@ -46,6 +46,7 @@
  * utilities needed anywhere in the components.
  */
 .dark {
+  color-scheme: dark;
   --color-background: #0f172a; /* slate-900 */
   --color-foreground: #f1f5f9; /* slate-100 */
 
