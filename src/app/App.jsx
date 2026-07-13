@@ -9,6 +9,7 @@ import StaffPage from '../features/staff/StaffPage';
 import DepartmentsPage from '../features/departments/DepartmentsPage';
 import AnalyticsPage from '../features/analytics/AnalyticsPage';
 import DoctorDashboard from '../features/doctor-dashboard/DoctorDashboard';
+import PatientDashboard from '../features/patient-dashboard/PatientDashboard';
 import './App.css';
 
 function RootRedirect() {
@@ -71,14 +72,13 @@ function PatientDashboardRoute() {
   }
 
   return (
-    <RolePlaceholder
-      role={user.role}
-      name={user.name}
+    <PatientDashboard
+      patientId={user._id || user.userId}
+      patientName={user.name}
       onSignOut={handleSignOut}
     />
   );
 }
-
 function ReceptionistDashboardRoute() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();

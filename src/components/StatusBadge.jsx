@@ -3,6 +3,12 @@ const STATUS_CONFIG = {
   confirmed: { label: "Confirmed", classes: "text-success border-success/30 bg-success/15" },
   completed: { label: "Completed", classes: "text-info border-info/30 bg-info/15" },
   cancelled: { label: "Cancelled", classes: "text-destructive border-destructive/30 bg-destructive/15" },
+
+  // real backend statuses (Appointment model): scheduled | attended | no-show | cancelled
+  
+  scheduled: { label: "Scheduled", classes: "text-success border-success/30 bg-success/15" },
+  attended: { label: "Attended", classes: "text-info border-info/30 bg-info/15" },
+  "no-show": { label: "No-show", classes: "text-warning border-warning/30 bg-warning/15" },
 };
 
 export default function StatusBadge({ status }) {

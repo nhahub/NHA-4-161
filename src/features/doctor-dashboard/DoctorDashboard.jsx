@@ -71,7 +71,8 @@ export default function DoctorDashboard({ doctorId, doctorName, onSignOut }) {
           onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
           isDark={isDark}
           onToggleDarkMode={toggleDarkMode}
-          doctorName={doctorName}
+          name={doctorName}
+          role="Doctor"
         />
 
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
