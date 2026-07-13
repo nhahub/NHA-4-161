@@ -4,7 +4,6 @@ import { X, Calendar, Clock, User, FileText } from "lucide-react";
 export default function AppointmentModal({ isOpen, onClose, onSubmit, appointment, doctors }) {
   const [formData, setFormData] = useState({
     patientName: "",
-    patientId: "",
     doctorId: "",
     date: "",
     time: "",
@@ -17,7 +16,6 @@ export default function AppointmentModal({ isOpen, onClose, onSubmit, appointmen
     if (appointment) {
       setFormData({
         patientName: appointment.patientName || "",
-        patientId: appointment.patientId || "",
         doctorId: appointment.doctorId || "",
         date: appointment.date || "",
         time: appointment.time || "",
@@ -27,7 +25,6 @@ export default function AppointmentModal({ isOpen, onClose, onSubmit, appointmen
     } else {
       setFormData({
         patientName: "",
-        patientId: "",
         doctorId: "",
         date: "",
         time: "",
@@ -41,7 +38,6 @@ export default function AppointmentModal({ isOpen, onClose, onSubmit, appointmen
   const validate = () => {
     const newErrors = {};
     if (!formData.patientName.trim()) newErrors.patientName = "Required";
-    if (!formData.patientId.trim()) newErrors.patientId = "Required";
     if (!formData.doctorId) newErrors.doctorId = "Required";
     if (!formData.date) newErrors.date = "Required";
     if (!formData.time) newErrors.time = "Required";
@@ -96,21 +92,7 @@ export default function AppointmentModal({ isOpen, onClose, onSubmit, appointmen
               {errors.patientName && <p className="mt-1 text-xs text-destructive">{errors.patientName}</p>}
             </div>
 
-            <div>
-              <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-foreground">
-                <FileText className="h-4 w-4 text-muted-foreground" /> Patient ID
-              </label>
-              <input
-                type="text"
-                className={`w-full rounded-lg border bg-background px-4 py-2.5 text-sm outline-none transition-all ${
-                  errors.patientId ? "border-destructive ring-1 ring-destructive/20" : "border-border focus:border-primary focus:ring-1 focus:ring-primary/20"
-                }`}
-                value={formData.patientId}
-                onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
-                placeholder="Enter patient ID"
-              />
-              {errors.patientId && <p className="mt-1 text-xs text-destructive">{errors.patientId}</p>}
-            </div>
+
 
             <div>
               <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-foreground">
