@@ -74,7 +74,7 @@ export default function ReceptionistDashboard({ receptionistId, receptionistName
   };
 
   const today = new Date().toISOString().split("T")[0];
-  const todayAppointments = appointments.filter((a) => a.date === today);
+  const todayAppointments = appointments.filter((a) => a.dateTime && a.dateTime.slice(0, 10) === today);
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">

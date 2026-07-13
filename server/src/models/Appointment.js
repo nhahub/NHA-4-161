@@ -2,6 +2,11 @@ const { Schema, model } = require('mongoose');
 
 const appointmentSchema = new Schema(
   {
+    patientId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
     doctorId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -27,5 +32,6 @@ const appointmentSchema = new Schema(
 // Used by cascade delete and analytics queries
 appointmentSchema.index({ doctorId: 1, dateTime: 1, status: 1 });
 appointmentSchema.index({ departmentId: 1, dateTime: 1 });
+appointmentSchema.index({ patientId: 1, dateTime: 1 });
 
 module.exports = model('Appointment', appointmentSchema);

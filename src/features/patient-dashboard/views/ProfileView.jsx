@@ -1,4 +1,4 @@
-import { Moon, ShieldCheck, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import useDarkMode from "../../../hooks/useDarkMode";
 
@@ -61,20 +61,6 @@ export default function ProfileView() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-            <h3 className="text-lg font-semibold text-foreground">Notification settings</h3>
-            <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <div className="flex items-center justify-between rounded-xl bg-muted px-4 py-3">
-                <span>Appointment reminders</span>
-                <ShieldCheck className="h-4 w-4 text-primary" />
-              </div>
-              <div className="flex items-center justify-between rounded-xl bg-muted px-4 py-3">
-                <span>Booking confirmations</span>
-                <ShieldCheck className="h-4 w-4 text-primary" />
-              </div>
-            </div>
-            <p className="mt-3 text-xs text-muted-foreground">Notification preferences aren't wired to the backend yet.</p>
-          </div>
         </div>
       </div>
     </div>

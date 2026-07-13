@@ -38,12 +38,20 @@ test('successful cascade: deactivates doctor and cancels future appointments', a
   });
   await doctor.save();
 
+  const patient = new User({
+    email: 'cascade-test-patient@test.com',
+    passwordHash: 'ValidPass12!',
+    name: 'Test Patient',
+    role: 'patient',
+  });
+  await patient.save();
+
   const futureDate = new Date(Date.now() + 86_400_000); // tomorrow
   const pastDate = new Date(Date.now() - 86_400_000);   // yesterday
 
   const [futureAppt, pastAppt] = await Appointment.insertMany([
-    { doctorId: doctor._id, departmentId: dept._id, dateTime: futureDate, status: 'scheduled' },
-    { doctorId: doctor._id, departmentId: dept._id, dateTime: pastDate,  status: 'scheduled' },
+    { patientId: patient._id, doctorId: doctor._id, departmentId: dept._id, dateTime: futureDate, status: 'scheduled' },
+    { patientId: patient._id, doctorId: doctor._id, departmentId: dept._id, dateTime: pastDate,  status: 'scheduled' },
   ]);
 
   const result = await deactivateUser(doctor._id.toString());

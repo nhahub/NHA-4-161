@@ -1,44 +1,43 @@
 import { useState } from "react";
-import { Calendar } from "lucide-react";
+
+function fmtTime(iso) {
+  return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+const STATUS_STYLES = {
+  scheduled: "rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 dark:bg-amber-900/30 dark:text-amber-400",
+  attended: "rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400",
+  "no-show": "rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-400",
+  cancelled: "rounded-full bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive",
+};
 
 export default function QueueManageView({ appointments, onUpdateStatus }) {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
 
-  const filteredAppointments = appointments.filter((apt) => apt.date === selectedDate);
+  const filteredAppointments = appointments.filter(
+    (apt) => apt.dateTime && apt.dateTime.slice(0, 10) === selectedDate
+  );
 
-  const renderStatus = (apt) => {
-    switch (apt.status) {
-      case "pending":
-        return <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">Pending</span>;
-      case "confirmed":
-        return <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">Confirmed</span>;
-      case "checked-in":
-        return <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Checked In</span>;
-      case "completed":
-        return <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">Completed</span>;
-      case "cancelled":
-        return <span className="rounded-full bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive dark:bg-destructive/20 dark:text-destructive">Cancelled</span>;
-      default:
-        return <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-400">{apt.status}</span>;
-    }
-  };
+  const renderStatus = (apt) => (
+    <span className={STATUS_STYLES[apt.status] ?? STATUS_STYLES.scheduled}>
+      {apt.status.charAt(0).toUpperCase() + apt.status.slice(1).replace("-", " ")}
+    </span>
+  );
 
   const renderActions = (apt) => {
     const actions = [];
-    
-    if (apt.status === "confirmed") {
+    if (apt.status === "scheduled") {
       actions.push(
         <button
-          key="checkin"
-          onClick={() => onUpdateStatus(apt._id, "checked-in")}
+          key="attend"
+          onClick={() => onUpdateStatus(apt._id, "attended")}
           className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted shadow-sm"
         >
-          Check In
+          Mark Attended
         </button>
       );
     }
-    
-    if (["pending", "confirmed", "checked-in"].includes(apt.status)) {
+    if (apt.status === "scheduled") {
       actions.push(
         <button
           key="cancel"
@@ -49,7 +48,6 @@ export default function QueueManageView({ appointments, onUpdateStatus }) {
         </button>
       );
     }
-
     return actions.length > 0 ? <div className="flex items-center gap-3">{actions}</div> : null;
   };
 
@@ -60,17 +58,15 @@ export default function QueueManageView({ appointments, onUpdateStatus }) {
           <h2 className="text-2xl font-bold tracking-tight text-foreground">Daily Queue</h2>
           <p className="text-sm text-muted-foreground">Manage patient queue</p>
         </div>
-        
+
         <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 shadow-sm">
           <span className="text-sm font-medium text-muted-foreground">Date:</span>
-          <div className="relative flex items-center">
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="bg-transparent text-sm font-medium text-foreground outline-none border-none focus:ring-0 cursor-pointer"
-            />
-          </div>
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            className="bg-transparent text-sm font-medium text-foreground outline-none border-none focus:ring-0 cursor-pointer"
+          />
         </div>
       </div>
 
@@ -86,8 +82,8 @@ export default function QueueManageView({ appointments, onUpdateStatus }) {
                     {index + 1}
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground">{apt.patientName}</p>
-                    <p className="text-xs text-muted-foreground">Dr. {apt.doctorName} • {apt.time}</p>
+                    <p className="font-semibold text-foreground">{apt.patientId?.name ?? "—"}</p>
+                    <p className="text-xs text-muted-foreground">Dr. {apt.doctorId?.name ?? "—"} • {fmtTime(apt.dateTime)}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-6">

@@ -1,10 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { Calendar, Clock3, Stethoscope } from "lucide-react";
-
-// NOTE for backend dev: slots below are static placeholders. Once the
-// backend exposes real per-doctor availability, fetch it here and disable
-// already-taken slots instead of hardcoding this list.
-const TIME_SLOTS = ["09:00", "10:30", "11:30", "13:00", "15:00", "16:15"];
+import api from "../../../services/api";
 
 function formatDateKey(date) {
   const year = date.getFullYear();
@@ -18,12 +14,33 @@ export default function BookAppointmentView({ doctors, departments, initialDocto
 
   const [selectedDoctorId, setSelectedDoctorId] = useState(initialDoctorId || bookableDoctors[0]?._id || "");
   const [selectedDate, setSelectedDate] = useState(() => formatDateKey(new Date()));
-  const [selectedSlot, setSelectedSlot] = useState(TIME_SLOTS[0]);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [slots, setSlots] = useState([]);
+  const [slotsLoading, setSlotsLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!selectedDoctorId && bookableDoctors[0]) setSelectedDoctorId(bookableDoctors[0]._id);
   }, [bookableDoctors, selectedDoctorId]);
+
+  // Fetch availability whenever doctor or date changes
+  const fetchSlots = useCallback(async (doctorId, date) => {
+    if (!doctorId || !date) return;
+    setSlotsLoading(true);
+    setSelectedSlot(null);
+    try {
+      const res = await api.get(`/appointments/availability?doctorId=${doctorId}&date=${date}`);
+      setSlots(res.data.slots ?? []);
+    } catch {
+      setSlots([]);
+    } finally {
+      setSlotsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchSlots(selectedDoctorId, selectedDate);
+  }, [selectedDoctorId, selectedDate, fetchSlots]);
 
   const doctor = bookableDoctors.find((d) => d._id === selectedDoctorId);
   const departmentName = (id) => departments.find((d) => d._id === id)?.name ?? "General";
@@ -42,15 +59,18 @@ export default function BookAppointmentView({ doctors, departments, initialDocto
   }, []);
 
   async function handleConfirm() {
-    if (!doctor) return;
+    if (!doctor || !selectedSlot) return;
     setSubmitting(true);
-    const dateTime = new Date(`${selectedDate}T${selectedSlot}:00`).toISOString();
+    // selectedSlot is already a full ISO string from the API
     try {
-      await onSubmit({ doctorId: doctor._id, departmentId: doctor.departmentId, dateTime });
+      await onSubmit({ doctorId: doctor._id, departmentId: doctor.departmentId, dateTime: selectedSlot });
     } finally {
       setSubmitting(false);
     }
   }
+
+  // Display helper: slot is an ISO string, show HH:MM
+  const fmtSlot = (iso) => new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   if (bookableDoctors.length === 0) {
     return <p className="text-sm text-muted-foreground">No doctors available to book right now.</p>;
@@ -117,23 +137,29 @@ export default function BookAppointmentView({ doctors, departments, initialDocto
             <div className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               <Clock3 className="h-4 w-4" /> Available time slots
             </div>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {TIME_SLOTS.map((slot) => {
-                const isSelected = selectedSlot === slot;
-                return (
-                  <button
-                    key={slot}
-                    type="button"
-                    onClick={() => setSelectedSlot(slot)}
-                    className={`rounded-xl border px-3 py-3 text-sm font-medium transition ${
-                      isSelected ? "border-primary bg-primary/10 text-primary shadow-sm" : "border-border bg-background text-foreground hover:border-muted-foreground/40"
-                    }`}
-                  >
-                    {slot}
-                  </button>
-                );
-              })}
-            </div>
+            {slotsLoading ? (
+              <p className="text-sm text-muted-foreground">Loading slots…</p>
+            ) : slots.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No available slots for this day.</p>
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-3">
+                {slots.map((slot) => {
+                  const isSelected = selectedSlot === slot;
+                  return (
+                    <button
+                      key={slot}
+                      type="button"
+                      onClick={() => setSelectedSlot(slot)}
+                      className={`rounded-xl border px-3 py-3 text-sm font-medium transition ${
+                        isSelected ? "border-primary bg-primary/10 text-primary shadow-sm" : "border-border bg-background text-foreground hover:border-muted-foreground/40"
+                      }`}
+                    >
+                      {fmtSlot(slot)}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
@@ -149,14 +175,14 @@ export default function BookAppointmentView({ doctors, departments, initialDocto
             </div>
             <div className="flex items-center justify-between">
               <span className="text-background/70">Time</span>
-              <span className="font-semibold">{selectedSlot}</span>
+              <span className="font-semibold">{selectedSlot ? fmtSlot(selectedSlot) : "—"}</span>
             </div>
           </div>
 
           <button
             type="button"
             onClick={handleConfirm}
-            disabled={submitting || !doctor}
+            disabled={submitting || !doctor || !selectedSlot}
             className="mt-6 w-full rounded-xl bg-background px-4 py-3 font-semibold text-foreground transition hover:opacity-90 disabled:opacity-60"
           >
             {submitting ? "Booking…" : "Confirm booking"}

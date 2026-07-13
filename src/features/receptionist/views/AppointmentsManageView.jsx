@@ -1,38 +1,43 @@
-import { Calendar } from "lucide-react";
+function fmtDateTime(iso) {
+  const d = new Date(iso);
+  return `${d.toLocaleDateString()} • ${d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+}
+
+const STATUS_STYLES = {
+  scheduled: "rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 dark:bg-amber-900/30 dark:text-amber-400",
+  attended: "rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400",
+  "no-show": "rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-400",
+  cancelled: "rounded-full bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive",
+};
 
 export default function AppointmentsManageView({ appointments, onUpdateStatus }) {
-  const renderStatus = (apt) => {
-    switch (apt.status) {
-      case "pending":
-        return <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">Pending</span>;
-      case "confirmed":
-        return <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">Confirmed</span>;
-      case "checked-in":
-        return <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Checked In</span>;
-      case "completed":
-        return <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">Completed</span>;
-      case "cancelled":
-        return <span className="rounded-full bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive dark:bg-destructive/20 dark:text-destructive">Cancelled</span>;
-      default:
-        return <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-400">{apt.status}</span>;
-    }
-  };
+  const renderStatus = (apt) => (
+    <span className={STATUS_STYLES[apt.status] ?? STATUS_STYLES.scheduled}>
+      {apt.status.charAt(0).toUpperCase() + apt.status.slice(1).replace("-", " ")}
+    </span>
+  );
 
   const renderActions = (apt) => {
     const actions = [];
-    if (apt.status === "pending") {
+    if (apt.status === "scheduled") {
       actions.push(
         <button
-          key="confirm"
-          onClick={() => onUpdateStatus(apt._id, "confirmed")}
+          key="attend"
+          onClick={() => onUpdateStatus(apt._id, "attended")}
           className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted shadow-sm"
         >
-          Confirm
+          Mark Attended
+        </button>,
+        <button
+          key="noshow"
+          onClick={() => onUpdateStatus(apt._id, "no-show")}
+          className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted shadow-sm"
+        >
+          No-show
         </button>
       );
     }
-    
-    if (["pending", "confirmed", "checked-in"].includes(apt.status)) {
+    if (apt.status === "scheduled") {
       actions.push(
         <button
           key="cancel"
@@ -43,7 +48,6 @@ export default function AppointmentsManageView({ appointments, onUpdateStatus })
         </button>
       );
     }
-
     return actions.length > 0 ? <div className="flex items-center gap-3">{actions}</div> : null;
   };
 
@@ -65,8 +69,10 @@ export default function AppointmentsManageView({ appointments, onUpdateStatus })
               <div key={apt._id} className="flex items-center justify-between rounded-lg border border-border p-4 transition-colors hover:bg-muted/50">
                 <div className="flex items-center gap-4">
                   <div>
-                    <p className="font-semibold text-foreground">{apt.patientName} → Dr. {apt.doctorName}</p>
-                    <p className="text-xs text-muted-foreground">{apt.date} • {apt.time}</p>
+                    <p className="font-semibold text-foreground">
+                      {apt.patientId?.name ?? "—"} → Dr. {apt.doctorId?.name ?? "—"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">{fmtDateTime(apt.dateTime)}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-6">

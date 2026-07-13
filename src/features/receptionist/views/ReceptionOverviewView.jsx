@@ -1,47 +1,37 @@
 import { Calendar, Clock, CheckCircle } from "lucide-react";
 
-export default function ReceptionOverviewView({ appointments, onUpdateStatus, onNewAppointment }) {
-  const todayAppointments = appointments; // Assuming parent filters for today, or we just show all if it's a demo
+function fmtTime(iso) {
+  return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
 
-  const total = todayAppointments.length;
-  const pending = todayAppointments.filter((a) => a.status === "pending").length;
-  const confirmed = todayAppointments.filter((a) => a.status === "confirmed" || a.status === "checked-in").length;
+export default function ReceptionOverviewView({ appointments, onUpdateStatus, onNewAppointment }) {
+  const total = appointments.length;
+  const scheduled = appointments.filter((a) => a.status === "scheduled").length;
+  const attended = appointments.filter((a) => a.status === "attended").length;
 
   const renderStatus = (apt) => {
     switch (apt.status) {
-      case "pending":
-        return <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">Pending</span>;
-      case "confirmed":
-        return <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">Confirmed</span>;
-      case "checked-in":
-        return <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Checked In</span>;
-      case "completed":
-        return <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">Completed</span>;
+      case "scheduled":
+        return <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">Scheduled</span>;
+      case "attended":
+        return <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">Attended</span>;
+      case "no-show":
+        return <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-400">No-show</span>;
       case "cancelled":
-        return <span className="rounded-full bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive dark:bg-destructive/20 dark:text-destructive">Cancelled</span>;
+        return <span className="rounded-full bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive">Cancelled</span>;
       default:
-        return <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-400">{apt.status}</span>;
+        return <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800">{apt.status}</span>;
     }
   };
 
   const renderAction = (apt) => {
-    if (apt.status === "pending") {
+    if (apt.status === "scheduled") {
       return (
         <button
-          onClick={() => onUpdateStatus(apt._id, "confirmed")}
+          onClick={() => onUpdateStatus(apt._id, "attended")}
           className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted shadow-sm"
         >
-          Confirm
-        </button>
-      );
-    }
-    if (apt.status === "confirmed") {
-      return (
-        <button
-          onClick={() => onUpdateStatus(apt._id, "checked-in")}
-          className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted shadow-sm"
-        >
-          Check In
+          Mark Attended
         </button>
       );
     }
@@ -73,17 +63,17 @@ export default function ReceptionOverviewView({ appointments, onUpdateStatus, on
         </div>
         <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-foreground">Pending</p>
+            <p className="text-sm font-medium text-foreground">Scheduled</p>
             <Clock className="h-4 w-4 text-amber-500" />
           </div>
-          <h3 className="mt-2 text-2xl font-bold">{pending}</h3>
+          <h3 className="mt-2 text-2xl font-bold">{scheduled}</h3>
         </div>
         <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-foreground">Confirmed</p>
+            <p className="text-sm font-medium text-foreground">Attended</p>
             <CheckCircle className="h-4 w-4 text-emerald-500" />
           </div>
-          <h3 className="mt-2 text-2xl font-bold">{confirmed}</h3>
+          <h3 className="mt-2 text-2xl font-bold">{attended}</h3>
         </div>
       </div>
 
@@ -94,18 +84,18 @@ export default function ReceptionOverviewView({ appointments, onUpdateStatus, on
         </div>
 
         <div className="space-y-3">
-          {todayAppointments.length === 0 ? (
+          {appointments.length === 0 ? (
             <p className="text-sm text-muted-foreground py-4 text-center">No appointments today.</p>
           ) : (
-            todayAppointments.map((apt, index) => (
+            appointments.map((apt, index) => (
               <div key={apt._id} className="flex items-center justify-between rounded-lg border border-border p-4 transition-colors hover:bg-muted/50">
                 <div className="flex items-center gap-4">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-50 text-sm font-bold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
                     {index + 1}
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground">{apt.patientName}</p>
-                    <p className="text-xs text-muted-foreground">Dr. {apt.doctorName} • {apt.time}</p>
+                    <p className="font-semibold text-foreground">{apt.patientId?.name ?? "—"}</p>
+                    <p className="text-xs text-muted-foreground">Dr. {apt.doctorId?.name ?? "—"} • {fmtTime(apt.dateTime)}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">

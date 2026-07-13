@@ -4,8 +4,8 @@ const Appointment = require('../models/Appointment');
  * Create an appointment. Status defaults to 'scheduled'.
  * No double-booking check — out of scope per tasks.md.
  */
-async function createAppointment({ doctorId, departmentId, dateTime }) {
-  const appt = await Appointment.create({ doctorId, departmentId, dateTime });
+async function createAppointment({ patientId, doctorId, departmentId, dateTime }) {
+  const appt = await Appointment.create({ patientId, doctorId, departmentId, dateTime });
   return appt;
 }
 
@@ -32,12 +32,14 @@ async function updateStatus(apptId, status) {
  * scope = { doctorId } limits to that doctor's own appointments.
  * Admins pass no scope and see everything.
  */
-async function listAppointments({ doctorId, limit = 50, skip = 0 } = {}) {
+async function listAppointments({ patientId, doctorId, limit = 50, skip = 0 } = {}) {
   const filter = { isActive: true };
+  if (patientId) filter.patientId = patientId;
   if (doctorId) filter.doctorId = doctorId;
 
   const [appointments, total] = await Promise.all([
     Appointment.find(filter)
+      .populate('patientId', 'name email')
       .populate('doctorId', 'name email')
       .populate('departmentId', 'name')
       .sort({ dateTime: -1 })

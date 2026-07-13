@@ -1,43 +1,45 @@
 import { useState, useEffect } from "react";
-import { X, Calendar, Clock, User, FileText } from "lucide-react";
+import { X, Calendar, Clock, User } from "lucide-react";
+import api from "../../../services/api";
 
 export default function AppointmentModal({ isOpen, onClose, onSubmit, appointment, doctors }) {
   const [formData, setFormData] = useState({
-    patientName: "",
+    patientId: "",
     doctorId: "",
     date: "",
     time: "",
-    type: "regular",
     notes: "",
   });
+  const [patients, setPatients] = useState([]);
   const [errors, setErrors] = useState({});
+
+  // Fetch patient list for the dropdown
+  useEffect(() => {
+    if (!isOpen) return;
+    api.get("/staff?role=patient&limit=200").then((res) => {
+      setPatients(res.data.users ?? []);
+    }).catch(() => {});
+  }, [isOpen]);
 
   useEffect(() => {
     if (appointment) {
+      const dt = appointment.dateTime ? new Date(appointment.dateTime) : null;
       setFormData({
-        patientName: appointment.patientName || "",
-        doctorId: appointment.doctorId || "",
-        date: appointment.date || "",
-        time: appointment.time || "",
-        type: appointment.type || "regular",
-        notes: appointment.notes || "",
+        patientId: appointment.patientId?._id ?? appointment.patientId ?? "",
+        doctorId: appointment.doctorId?._id ?? appointment.doctorId ?? "",
+        date: dt ? dt.toISOString().split("T")[0] : "",
+        time: dt ? dt.toTimeString().slice(0, 5) : "",
+        notes: appointment.notes ?? "",
       });
     } else {
-      setFormData({
-        patientName: "",
-        doctorId: "",
-        date: "",
-        time: "",
-        type: "regular",
-        notes: "",
-      });
+      setFormData({ patientId: "", doctorId: "", date: "", time: "", notes: "" });
     }
     setErrors({});
   }, [appointment, isOpen]);
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.patientName.trim()) newErrors.patientName = "Required";
+    if (!formData.patientId) newErrors.patientId = "Required";
     if (!formData.doctorId) newErrors.doctorId = "Required";
     if (!formData.date) newErrors.date = "Required";
     if (!formData.time) newErrors.time = "Required";
@@ -47,14 +49,9 @@ export default function AppointmentModal({ isOpen, onClose, onSubmit, appointmen
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validate()) {
-      const doctor = doctors.find((d) => d._id === formData.doctorId);
-      onSubmit({
-        ...formData,
-        doctorName: doctor?.name || "",
-        department: doctor?.department || "",
-      });
-    }
+    if (!validate()) return;
+    const dateTime = new Date(`${formData.date}T${formData.time}:00`).toISOString();
+    onSubmit({ patientId: formData.patientId, doctorId: formData.doctorId, dateTime, notes: formData.notes });
   };
 
   if (!isOpen) return null;
@@ -76,27 +73,30 @@ export default function AppointmentModal({ isOpen, onClose, onSubmit, appointmen
 
         <div className="p-5 overflow-y-auto max-h-[80vh]">
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Patient */}
             <div>
               <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-foreground">
-                <User className="h-4 w-4 text-muted-foreground" /> Patient Name
+                <User className="h-4 w-4 text-muted-foreground" /> Patient
               </label>
-              <input
-                type="text"
+              <select
                 className={`w-full rounded-lg border bg-background px-4 py-2.5 text-sm outline-none transition-all ${
-                  errors.patientName ? "border-destructive ring-1 ring-destructive/20" : "border-border focus:border-primary focus:ring-1 focus:ring-primary/20"
+                  errors.patientId ? "border-destructive ring-1 ring-destructive/20" : "border-border focus:border-primary focus:ring-1 focus:ring-primary/20"
                 }`}
-                value={formData.patientName}
-                onChange={(e) => setFormData({ ...formData, patientName: e.target.value })}
-                placeholder="Enter patient name"
-              />
-              {errors.patientName && <p className="mt-1 text-xs text-destructive">{errors.patientName}</p>}
+                value={formData.patientId}
+                onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
+              >
+                <option value="">Select a patient</option>
+                {patients.map((p) => (
+                  <option key={p._id} value={p._id}>{p.name}</option>
+                ))}
+              </select>
+              {errors.patientId && <p className="mt-1 text-xs text-destructive">{errors.patientId}</p>}
             </div>
 
-
-
+            {/* Doctor */}
             <div>
               <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-foreground">
-                <User className="h-4 w-4 text-muted-foreground" /> Doctor {/* Using User icon for simplicity */}
+                <User className="h-4 w-4 text-muted-foreground" /> Doctor
               </label>
               <select
                 className={`w-full rounded-lg border bg-background px-4 py-2.5 text-sm outline-none transition-all ${
@@ -108,13 +108,14 @@ export default function AppointmentModal({ isOpen, onClose, onSubmit, appointmen
                 <option value="">Select a doctor</option>
                 {doctors.map((doc) => (
                   <option key={doc._id} value={doc._id}>
-                    {doc.name} - {doc.department}
+                    {doc.name} — {doc.departmentId?.name ?? ""}
                   </option>
                 ))}
               </select>
               {errors.doctorId && <p className="mt-1 text-xs text-destructive">{errors.doctorId}</p>}
             </div>
 
+            {/* Date + Time */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-foreground">
@@ -146,26 +147,7 @@ export default function AppointmentModal({ isOpen, onClose, onSubmit, appointmen
               </div>
             </div>
 
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-foreground">Type</label>
-              <div className="flex gap-2">
-                {["regular", "urgent", "follow-up"].map((type) => (
-                  <button
-                    key={type}
-                    type="button"
-                    className={`rounded-lg border px-4 py-2 text-sm font-medium capitalize transition-all ${
-                      formData.type === type
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-foreground hover:border-muted-foreground"
-                    }`}
-                    onClick={() => setFormData({ ...formData, type })}
-                  >
-                    {type.replace("-", " ")}
-                  </button>
-                ))}
-              </div>
-            </div>
-
+            {/* Notes */}
             <div>
               <label className="mb-1.5 block text-sm font-medium text-foreground">Notes</label>
               <textarea

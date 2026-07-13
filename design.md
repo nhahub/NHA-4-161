@@ -122,10 +122,10 @@ Tinted-outline badges (15% color background + 30% border + solid text). Consiste
 
 | Status | Color |
 |---|---|
-| pending | amber (`warning`) |
-| confirmed | green (`success`) |
+| scheduled | amber (`warning`) |
+| attended | green (`success`) |
+| no-show | slate (muted) |
 | cancelled | red (`destructive`) |
-| completed | blue (`info`) |
 
 ### Role Badges (Admin > Users)
 
