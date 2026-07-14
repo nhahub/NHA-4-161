@@ -13,6 +13,7 @@ const User = require('../models/User');
 const Department = require('../models/Department');
 const Appointment = require('../models/Appointment');
 const { deactivateUser } = require('../services/staffService');
+const { reassignHead } = require('../services/departmentService');
 
 before(async () => {
   await mongoose.connect(process.env.MONGODB_URI, { maxPoolSize: 2 });
@@ -83,4 +84,33 @@ test('deactivating a non-existent user throws 404', async () => {
       return true;
     }
   );
+});
+
+test('reassignHead fails when target user is not a doctor', async () => {
+  const dept = await Department.create({ name: 'cascade-test-dept-2' });
+
+  const patient = new User({
+    email: 'cascade-test-non-doctor@test.com',
+    passwordHash: 'ValidPass12!',
+    name: 'Test Patient',
+    role: 'patient',
+  });
+  await patient.save();
+
+  await assert.rejects(
+    () => reassignHead(dept._id.toString(), patient._id.toString()),
+    (err) => {
+      assert.equal(err.status, 400);
+      assert.match(err.message, /not an active doctor/i);
+      return true;
+    }
+  );
+
+  // Reassign to null/none should succeed
+  const updatedDept = await reassignHead(dept._id.toString(), null);
+  assert.equal(updatedDept.headUserId, null);
+
+  // Cleanup
+  await Department.deleteOne({ _id: dept._id });
+  await User.deleteOne({ _id: patient._id });
 });

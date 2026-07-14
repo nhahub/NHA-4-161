@@ -56,6 +56,16 @@ async function create(req, res, next) {
       return res.status(400).json({ error: 'patientId is required' });
     }
 
+    const mongoose = require('mongoose');
+    if (!mongoose.Types.ObjectId.isValid(patientId)) {
+      return res.status(400).json({ error: 'Invalid patientId' });
+    }
+
+    const patient = await User.findOne({ _id: patientId, role: 'patient', isActive: true });
+    if (!patient) {
+      return res.status(400).json({ error: 'Patient not found or inactive' });
+    }
+
     const appt = await apptService.createAppointment({
       patientId,
       doctorId,

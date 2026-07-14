@@ -43,9 +43,9 @@ async function listDepartments() {
  */
 async function reassignHead(deptId, newHeadUserId) {
   if (newHeadUserId) {
-    const head = await User.findOne({ _id: newHeadUserId, isActive: true });
+    const head = await User.findOne({ _id: newHeadUserId, isActive: true, role: 'doctor' });
     if (!head) {
-      const err = new Error('Target user is not active');
+      const err = new Error('Target user is not an active doctor');
       err.status = 400;
       throw err;
     }

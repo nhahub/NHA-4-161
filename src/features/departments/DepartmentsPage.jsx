@@ -190,7 +190,7 @@ export default function DepartmentsPage() {
       {reassignTarget && (
         <ReassignModal
           dept={reassignTarget}
-          activeStaff={allStaff}
+          activeStaff={allStaff.filter((s) => s.role === 'doctor')}
           onSave={() => { setReassign(null); fetchAll(); }}
           onClose={() => setReassign(null)}
         />
