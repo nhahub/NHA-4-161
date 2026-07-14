@@ -32,7 +32,7 @@ export default function AuthPage() {
         <div
           className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden backdrop-blur-sm transition-[max-height] duration-600 ease-[cubic-bezier(0.16,1,0.3,1)]"
           style={{
-            maxHeight: activeTab === 'signin' ? '380px' : '560px',
+            maxHeight: activeTab === 'signin' ? '440px' : '620px',
           }}
         >
           {/* Animated Tab Switch Buttons */}

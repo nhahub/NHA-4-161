@@ -22,6 +22,10 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    if (/\d/.test(values.fullName)) {
+      setError("Full name cannot contain numbers.");
+      return;
+    }
     setLoading(true);
     try {
       await register(values.email, values.password, values.fullName, values.phone);

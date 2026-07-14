@@ -20,7 +20,16 @@ const registerRules = [
     .isLength({ min: 12 })
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
     .withMessage('Password must be ≥12 chars with upper, lower, and digit'),
-  body('name').trim().notEmpty(),
+  body('name')
+    .trim()
+    .notEmpty()
+    .withMessage('Name is required')
+    .custom((value) => {
+      if (/\d/.test(value)) {
+        throw new Error('Full name cannot contain numbers');
+      }
+      return true;
+    }),
   body('phone')
     .optional({ checkFalsy: true })
     .trim()
