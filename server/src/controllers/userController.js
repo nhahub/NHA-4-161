@@ -23,7 +23,7 @@ const createRules = [
 const updateRules = [
   param('id').isMongoId(),
   body('name').optional().trim().notEmpty(),
-  body('role').optional().isIn(['admin', 'doctor', 'receptionist']),
+  body('role').optional().isIn(['admin', 'doctor', 'receptionist', 'patient']),
   body('departmentId').optional().isMongoId(),
   body('password')
     .optional()

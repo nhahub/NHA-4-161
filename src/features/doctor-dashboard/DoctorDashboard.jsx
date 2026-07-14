@@ -39,12 +39,38 @@ export default function DoctorDashboard({ doctorId, doctorName, onSignOut }) {
     });
   };
 
-  const handleAddBlock = (block) => {
-    addBlock(block);
-    showToast(`${block.date} · ${block.startTime}–${block.endTime} is now unavailable for booking.`, {
-      title: "Time slot locked",
-      variant: "info",
-    });
+  const handleAddBlock = async (block) => {
+    try {
+      await addBlock(block);
+      showToast(`${block.date} · ${block.startTime}–${block.endTime} is now unavailable for booking.`, {
+        title: "Time slot locked",
+        variant: "success",
+      });
+    } catch (err) {
+      const raw = err.response?.data?.error;
+      const msg = typeof raw === "object" ? raw?.message : raw;
+      showToast(msg || "Failed to lock time slot.", {
+        title: "Error",
+        variant: "error",
+      });
+    }
+  };
+
+  const handleRemoveBlock = async (id) => {
+    try {
+      await removeBlock(id);
+      showToast("The time block has been removed.", {
+        title: "Block removed",
+        variant: "success",
+      });
+    } catch (err) {
+      const raw = err.response?.data?.error;
+      const msg = typeof raw === "object" ? raw?.message : raw;
+      showToast(msg || "Failed to remove time block.", {
+        title: "Error",
+        variant: "error",
+      });
+    }
   };
 
   return (
@@ -102,7 +128,7 @@ export default function DoctorDashboard({ doctorId, doctorName, onSignOut }) {
               )}
 
               {activeView === "blocktime" && (
-                <BlockTimeView blocks={blocks} onAddBlock={handleAddBlock} onRemoveBlock={removeBlock} />
+                <BlockTimeView blocks={blocks} onAddBlock={handleAddBlock} onRemoveBlock={handleRemoveBlock} />
               )}
             </>
           )}

@@ -49,7 +49,8 @@ server/
 │   │   └── analyticsService.js    # 4 parallel aggregation pipelines: by status, department, doctor, daily trend
 │   ├── tests/
 │   │   ├── appointments.test.js   # Authorization guard tests (node:test)
-│   │   └── cascade.test.js        # Cascade transaction correctness tests (node:test)
+│   │   ├── cascade.test.js        # Cascade transaction correctness tests (node:test)
+│   │   └── roleChangeCascade.test.js # Doctor role change cascade transaction tests (node:test)
 │   └── utils/
 │       └── jwt.js            # signAccess, signRefresh, verifyAccess, verifyRefresh — separate secrets, 15m/7d TTL
 ```
@@ -337,7 +338,7 @@ These are facts discovered in the code, not suggestions.
 3. `npm run dev` (from root) — starts Vite dev server on port 5173 with API proxy
 
 ### Testing
-- **Backend**: Node.js built-in test runner (`node:test` + `node:assert/strict`) — 2 test files in `server/src/tests/`
+- **Backend**: Node.js built-in test runner (`node:test` + `node:assert/strict`) — 3 test files in `server/src/tests/`
 - **Frontend**: No tests — no testing library installed
 - Run backend tests: `cd server && npm test`
 

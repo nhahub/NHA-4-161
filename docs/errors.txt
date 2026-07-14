@@ -1,0 +1,196 @@
+2content.js:66 Mouse up event, selected text: 
+feature_collector.js:23 using deprecated parameters for the initialization function; pass a single object instead
+N @ feature_collector.js:23
+main @ feature_collector.js:23
+mainFunction @ feature_collector.js:23
+(anonymous) @ feature_collector.js:23
+2content.js:66 Mouse up event, selected text: 
+index-D_9vNHWp.js:238  POST https://hospital-smart-queue-f66p0v10t-yassin-wahb01s-projects.vercel.app/api/v1/appointments 403 (Forbidden)
+(anonymous) @ index-D_9vNHWp.js:238
+xhr @ index-D_9vNHWp.js:238
+fo @ index-D_9vNHWp.js:240
+_request @ index-D_9vNHWp.js:244
+request @ index-D_9vNHWp.js:240
+(anonymous) @ index-D_9vNHWp.js:244
+(anonymous) @ index-D_9vNHWp.js:236
+kq @ index-D_9vNHWp.js:317
+(anonymous) @ index-D_9vNHWp.js:317
+D @ index-D_9vNHWp.js:317
+_ @ index-D_9vNHWp.js:317
+ru @ index-D_9vNHWp.js:179
+N @ index-D_9vNHWp.js:33
+iu @ index-D_9vNHWp.js:179
+(anonymous) @ index-D_9vNHWp.js:179
+on @ index-D_9vNHWp.js:75
+lu @ index-D_9vNHWp.js:179
+af @ index-D_9vNHWp.js:188
+nf @ index-D_9vNHWp.js:188
+<button>
+e.jsxDEV @ index-D_9vNHWp.js:249
+Xq @ index-D_9vNHWp.js:317
+react_stack_bottom_frame @ index-D_9vNHWp.js:223
+xa @ index-D_9vNHWp.js:119
+ya @ index-D_9vNHWp.js:119
+vs @ index-D_9vNHWp.js:135
+Fs @ index-D_9vNHWp.js:144
+N @ index-D_9vNHWp.js:33
+gl @ index-D_9vNHWp.js:157
+pl @ index-D_9vNHWp.js:157
+fl @ index-D_9vNHWp.js:157
+Qc @ index-D_9vNHWp.js:157
+Xl @ index-D_9vNHWp.js:179
+Gl @ index-D_9vNHWp.js:179
+ql @ index-D_9vNHWp.js:179
+(anonymous) @ index-D_9vNHWp.js:179
+<Xq>
+e.jsxDEV @ index-D_9vNHWp.js:249
+nJ @ index-D_9vNHWp.js:317
+react_stack_bottom_frame @ index-D_9vNHWp.js:223
+xa @ index-D_9vNHWp.js:119
+ya @ index-D_9vNHWp.js:119
+vs @ index-D_9vNHWp.js:135
+Fs @ index-D_9vNHWp.js:144
+N @ index-D_9vNHWp.js:33
+gl @ index-D_9vNHWp.js:157
+pl @ index-D_9vNHWp.js:157
+fl @ index-D_9vNHWp.js:157
+Qc @ index-D_9vNHWp.js:157
+Xl @ index-D_9vNHWp.js:179
+Gl @ index-D_9vNHWp.js:179
+ql @ index-D_9vNHWp.js:179
+(anonymous) @ index-D_9vNHWp.js:179
+<nJ>
+e.jsxDEV @ index-D_9vNHWp.js:249
+sJ @ index-D_9vNHWp.js:317
+react_stack_bottom_frame @ index-D_9vNHWp.js:223
+xa @ index-D_9vNHWp.js:119
+ya @ index-D_9vNHWp.js:119
+vs @ index-D_9vNHWp.js:135
+Fs @ index-D_9vNHWp.js:144
+N @ index-D_9vNHWp.js:33
+gl @ index-D_9vNHWp.js:157
+pl @ index-D_9vNHWp.js:157
+fl @ index-D_9vNHWp.js:157
+Qc @ index-D_9vNHWp.js:157
+Yl @ index-D_9vNHWp.js:179
+t @ index-D_9vNHWp.js:13
+<sJ>
+e.jsxDEV @ index-D_9vNHWp.js:249
+lJ @ index-D_9vNHWp.js:317
+react_stack_bottom_frame @ index-D_9vNHWp.js:223
+xa @ index-D_9vNHWp.js:119
+ya @ index-D_9vNHWp.js:119
+vs @ index-D_9vNHWp.js:135
+Fs @ index-D_9vNHWp.js:144
+N @ index-D_9vNHWp.js:33
+gl @ index-D_9vNHWp.js:157
+pl @ index-D_9vNHWp.js:157
+fl @ index-D_9vNHWp.js:157
+Qc @ index-D_9vNHWp.js:157
+Yl @ index-D_9vNHWp.js:179
+t @ index-D_9vNHWp.js:13
+<lJ>
+e.jsxDEV @ index-D_9vNHWp.js:249
+(anonymous) @ index-D_9vNHWp.js:317
+4content.js:66 Mouse up event, selected text: 
+index-D_9vNHWp.js:238  POST https://hospital-smart-queue-f66p0v10t-yassin-wahb01s-projects.vercel.app/api/v1/appointments 403 (Forbidden)
+(anonymous) @ index-D_9vNHWp.js:238
+xhr @ index-D_9vNHWp.js:238
+fo @ index-D_9vNHWp.js:240
+_request @ index-D_9vNHWp.js:244
+request @ index-D_9vNHWp.js:240
+(anonymous) @ index-D_9vNHWp.js:244
+(anonymous) @ index-D_9vNHWp.js:236
+kq @ index-D_9vNHWp.js:317
+(anonymous) @ index-D_9vNHWp.js:317
+D @ index-D_9vNHWp.js:317
+_ @ index-D_9vNHWp.js:317
+ru @ index-D_9vNHWp.js:179
+N @ index-D_9vNHWp.js:33
+iu @ index-D_9vNHWp.js:179
+(anonymous) @ index-D_9vNHWp.js:179
+on @ index-D_9vNHWp.js:75
+lu @ index-D_9vNHWp.js:179
+af @ index-D_9vNHWp.js:188
+nf @ index-D_9vNHWp.js:188
+<button>
+e.jsxDEV @ index-D_9vNHWp.js:249
+Xq @ index-D_9vNHWp.js:317
+react_stack_bottom_frame @ index-D_9vNHWp.js:223
+xa @ index-D_9vNHWp.js:119
+ya @ index-D_9vNHWp.js:119
+vs @ index-D_9vNHWp.js:135
+Fs @ index-D_9vNHWp.js:144
+N @ index-D_9vNHWp.js:33
+gl @ index-D_9vNHWp.js:157
+pl @ index-D_9vNHWp.js:157
+fl @ index-D_9vNHWp.js:157
+Qc @ index-D_9vNHWp.js:157
+Xl @ index-D_9vNHWp.js:179
+Gl @ index-D_9vNHWp.js:179
+ql @ index-D_9vNHWp.js:179
+(anonymous) @ index-D_9vNHWp.js:179
+<Xq>
+e.jsxDEV @ index-D_9vNHWp.js:249
+nJ @ index-D_9vNHWp.js:317
+react_stack_bottom_frame @ index-D_9vNHWp.js:223
+xa @ index-D_9vNHWp.js:119
+ya @ index-D_9vNHWp.js:119
+vs @ index-D_9vNHWp.js:135
+Fs @ index-D_9vNHWp.js:144
+N @ index-D_9vNHWp.js:33
+gl @ index-D_9vNHWp.js:157
+pl @ index-D_9vNHWp.js:157
+fl @ index-D_9vNHWp.js:157
+Qc @ index-D_9vNHWp.js:157
+Xl @ index-D_9vNHWp.js:179
+Gl @ index-D_9vNHWp.js:179
+ql @ index-D_9vNHWp.js:179
+(anonymous) @ index-D_9vNHWp.js:179
+<nJ>
+e.jsxDEV @ index-D_9vNHWp.js:249
+sJ @ index-D_9vNHWp.js:317
+react_stack_bottom_frame @ index-D_9vNHWp.js:223
+xa @ index-D_9vNHWp.js:119
+ya @ index-D_9vNHWp.js:119
+vs @ index-D_9vNHWp.js:135
+Fs @ index-D_9vNHWp.js:144
+N @ index-D_9vNHWp.js:33
+gl @ index-D_9vNHWp.js:157
+pl @ index-D_9vNHWp.js:157
+fl @ index-D_9vNHWp.js:157
+Qc @ index-D_9vNHWp.js:157
+Yl @ index-D_9vNHWp.js:179
+t @ index-D_9vNHWp.js:13
+<sJ>
+e.jsxDEV @ index-D_9vNHWp.js:249
+lJ @ index-D_9vNHWp.js:317
+react_stack_bottom_frame @ index-D_9vNHWp.js:223
+xa @ index-D_9vNHWp.js:119
+ya @ index-D_9vNHWp.js:119
+vs @ index-D_9vNHWp.js:135
+Fs @ index-D_9vNHWp.js:144
+N @ index-D_9vNHWp.js:33
+gl @ index-D_9vNHWp.js:157
+pl @ index-D_9vNHWp.js:157
+fl @ index-D_9vNHWp.js:157
+Qc @ index-D_9vNHWp.js:157
+Yl @ index-D_9vNHWp.js:179
+t @ index-D_9vNHWp.js:13
+<lJ>
+e.jsxDEV @ index-D_9vNHWp.js:249
+(anonymous) @ index-D_9vNHWp.js:317
+
+
+
+
+
+
+index-D_9vNHWp.js:238 
+ POST https://hospital-smart-queue-f66p0v10t-yassin-wahb01s-projects.vercel.app/api/v1/appointments 400 (Bad Request)
+
+
+in the admin dashboard in the departments navlink when I try to assign a head for the department it doesn't choose only doctors it chooses all the users (patient , admin , doctor, receptionist)
+
+﻿
+

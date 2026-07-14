@@ -4,6 +4,7 @@
  * Requires a running MongoDB replica set (docker-compose up -d).
  * Run with:  node --test server/src/tests/cascade.test.js
  */
+process.env.TZ = 'Africa/Cairo';
 const assert = require('node:assert/strict');
 const { test, before, after } = require('node:test');
 const mongoose = require('mongoose');

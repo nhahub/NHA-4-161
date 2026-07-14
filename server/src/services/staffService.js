@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const Appointment = require('../models/Appointment');
+const Department = require('../models/Department');
 
 /**
  * Soft-delete a staff member inside a single Mongo transaction.
@@ -80,22 +81,43 @@ async function updateUser(userId, data) {
     throw err;
   }
 
-  // Use findOne + save so pre('save') fires for password hashing
-  if (allowed.passwordHash) {
-    const user = await User.findOne({ _id: userId, isActive: true });
-    if (!user) { const e = new Error('Not found'); e.status = 404; throw e; }
-    Object.assign(user, allowed);
-    await user.save();
-    return { _id: user._id, name: user.name, email: user.email, role: user.role };
-  }
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  const user = await User.findOneAndUpdate(
-    { _id: userId, isActive: true },
-    allowed,
-    { new: true, select: 'name email role departmentId' }
-  );
-  if (!user) { const e = new Error('Not found'); e.status = 404; throw e; }
-  return user;
+  try {
+    const user = await User.findOne({ _id: userId, isActive: true }).session(session);
+    if (!user) {
+      const err = new Error('Staff member not found');
+      err.status = 404;
+      throw err;
+    }
+
+    // Detect role change: doctor -> non-doctor
+    if (user.role === 'doctor' && allowed.role && allowed.role !== 'doctor') {
+      const now = new Date();
+      await Appointment.updateMany(
+        { doctorId: userId, status: 'scheduled', dateTime: { $gte: now } },
+        { status: 'cancelled' },
+        { session }
+      );
+      await Department.updateMany(
+        { headUserId: userId },
+        { headUserId: null },
+        { session }
+      );
+    }
+
+    Object.assign(user, allowed);
+    await user.save({ session });
+
+    await session.commitTransaction();
+    return { _id: user._id, name: user.name, email: user.email, role: user.role, departmentId: user.departmentId };
+  } catch (err) {
+    await session.abortTransaction();
+    throw err;
+  } finally {
+    session.endSession();
+  }
 }
 
 /**

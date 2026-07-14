@@ -31,7 +31,8 @@ export default function BookAppointmentView({ doctors, departments, initialDocto
     try {
       const res = await api.get(`/appointments/availability?doctorId=${doctorId}&date=${date}`);
       setSlots(res.data.slots ?? []);
-    } catch {
+    } catch (err) {
+      console.error("Failed to fetch availability slots:", err);
       setSlots([]);
     } finally {
       setSlotsLoading(false);

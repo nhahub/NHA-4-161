@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { X, Calendar, Clock, User } from "lucide-react";
-import api from "../../../services/api";
+import { receptionistApi } from "../../../services/receptionistApi";
 
 export default function AppointmentModal({ isOpen, onClose, onSubmit, appointment, doctors }) {
   const [formData, setFormData] = useState({
@@ -16,9 +16,13 @@ export default function AppointmentModal({ isOpen, onClose, onSubmit, appointmen
   // Fetch patient list for the dropdown
   useEffect(() => {
     if (!isOpen) return;
-    api.get("/staff?role=patient&limit=200").then((res) => {
-      setPatients(res.data.users ?? []);
-    }).catch(() => {});
+    receptionistApi.getPatients()
+      .then((data) => {
+        setPatients(data ?? []);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch patients list:", err);
+      });
   }, [isOpen]);
 
   useEffect(() => {

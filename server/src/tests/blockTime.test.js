@@ -1,3 +1,4 @@
+process.env.TZ = 'Africa/Cairo';
 const assert = require('node:assert/strict');
 const { test, before, after } = require('node:test');
 const http = require('node:http');
