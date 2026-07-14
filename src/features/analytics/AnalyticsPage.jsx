@@ -86,7 +86,7 @@ export default function AnalyticsPage() {
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-emerald-500" />
-          <h1 className="text-2xl font-bold text-slate-900">Analytics</h1>
+          <h1 className="text-2xl font-bold text-foreground">Analytics</h1>
           <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs text-slate-500">Last 7 days</span>
         </div>
         <div className="flex items-center gap-3">
